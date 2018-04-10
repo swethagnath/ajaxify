@@ -1,35 +1,37 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Customers</h1>
-
-<table>
+<h1>Customers<span id="count"><%=@customers.count%></span></h1>
+<table id="customerTable">
   <thead>
     <tr>
       <th>State</th>
       <th>City</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Mobile</th>
-      <th colspan="3"></th>
+      <th><MAP></MAP>mobile</th>
+      <th></th>
     </tr>
   </thead>
-
-  <tbody>
-    <% @customers.each do |customer| %>
-      <tr>
+  <tbody id="body">
+    <%@customers.each do |customer| %>
+      <tr id="customer_<%=customer.id%>">
         <td><%= customer.state.name %></td>
         <td><%= customer.city.name %></td>
         <td><%= customer.name %></td>
         <td><%= customer.email %></td>
         <td><%= customer.mobile %></td>
-        <td><%= link_to 'Show', customer %></td>
-        <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
-        <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', customer %>
+        <%= link_to 'Edit', edit_customer_path(customer) %>
+        <%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' },remote: true%>
+        </td>
       </tr>
-    <% end %>
+    <%end%>
   </tbody>
 </table>
-
 <br>
-
-<%= link_to 'New Customer', new_customer_path %>
+<h2>add new customer</h2>
+<%= render 'form',customer: @customer%>
+<h2>add new state</h2>
+<%= render '/states/form',state: @state%>
+<script>
+  $('#customerTable').DataTable();
+</script>

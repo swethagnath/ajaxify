@@ -1,0 +1,12 @@
+<%if @person.valid?%>
+	$('#new_person')[0].reset();
+	// document.getElementById('new_person').reset();
+	$('#notice').html('New Person added - <%=@person.name%>');
+	// document.getElementById('notice').innerHTML = 'New Person added <%=@person.name%>';
+	$('#count').html('<%=Person.count%>');
+	// document.getElementById('count').innerHTML = "<%=Person.count%>";
+	$('#body').append('<%= escape_javascript render 'person'%>');
+	// ssdocument.getElementById('body').appendChild('<%= escape_javascript render 'person'%>');
+<%else%>
+	$('#errorMessage').html('<%= escape_javascript render 'error'%>');
+<%end%>

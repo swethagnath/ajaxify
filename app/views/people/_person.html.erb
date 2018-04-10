@@ -1,0 +1,10 @@
+<tr>
+	<td><%= @person.state.name%></td>
+	<td><%= @person.city.name%></td>
+	<td><%= @person.email%></td>
+	<td><%= @person.mobile%></td>
+	<td><%= @person.state.name%></td>
+	<td><%= link_to 'show',@person%></td>
+	<td><%= link_to 'edit',edit_person_path(@person)%></td>
+	<td><%= link_to 'destroy',@person,method: :delete,data:{confirm:'Are you sure?'}%></td>
+</tr>

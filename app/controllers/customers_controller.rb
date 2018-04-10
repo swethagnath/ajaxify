@@ -1,10 +1,12 @@
 class CustomersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
-
   # GET /customers
   # GET /customers.json
   def index
-    @customers = Customer.all
+    @customers = Customer.all.limit(10)
+    @customer = Customer.new  
+    @state = State.new
   end
 
   # GET /customers/1
@@ -25,15 +27,12 @@ class CustomersController < ApplicationController
   # POST /customers.json
   def create
     @customer = Customer.new(customer_params)
-
-    respond_to do |format|
-      if @customer.save
-        format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
-        format.json { render :show, status: :created, location: @customer }
-      else
-        format.html { render :new }
-        format.json { render json: @customer.errors, status: :unprocessable_entity }
-      end
+    if @customer.save
+        # render json: {name:@customer.name,mobile:@customer.mobile,email:@customer.email,state_name:@customer.state.name,
+        # city_name:@customer.city.name,state_id:@customer.state_id,city_id:@customer.city_id}
+        render json: @customer.attributes.merge(state_name:@customer.state.name,city_name:@customer.city.name,customer_count:Customer.count);
+    else
+      render json:{error: @customer.errors.full_messages}
     end
   end
 
@@ -60,7 +59,14 @@ class CustomersController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def check_email_present
+    @email = Customer.find_by(email:params[:email])
+    render json: @email.nil? ? {'msg':"can be used"} : {'msg':'already taken'}
+  end
+  def check_mobile_present
+    @mobile = Customer.find_by(mobile:params[:mobile])
+    render json: @mobile.nil? ? {'msg':"can be used"} : {'msg':'already taken'}
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer

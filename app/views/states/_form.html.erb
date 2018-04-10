@@ -1,8 +1,7 @@
-<%= form_with(model: state, local: true) do |form| %>
+<%= form_for(state, remote: true) do |form| %>
   <% if state.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(state.errors.count, "error") %> prohibited this state from being saved:</h2>
-
       <ul>
       <% state.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -10,13 +9,29 @@
       </ul>
     </div>
   <% end %>
-
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name, id: :state_name %>
+    <%= form.text_field :name, id: :state_name %><span id="nameErroror"></span>
   </div>
-
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+<script>
+  var nameHandler = document.getElementById('state_name');
+  var nameErrorHandler = document.getElementById('nameErroror');
+  nameHandler.addEventListener('blur',function(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','/states/check_name_present?name='+nameHandler.value,true);
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState === 4 && xhr.status === 200){
+        var response = JSON.parse(xhr.responseText);
+        nameErrorHandler.innerHTML = response.msg;
+      }
+    }
+    xhr.send();
+  },false);
+  nameHandler.addEventListener('focus',function(){
+    nameErrorHandler.innerHTML = "";
+  },true);
+</script>

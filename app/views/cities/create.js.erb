@@ -1,0 +1,6 @@
+<%if @city.valid?%>
+	$('#new_city')[0].reset();
+	$('#body').append('<%=escape_javascript render 'city'%>')
+<%else%>
+	$('#Cityerror').html('<%=escape_javascript render 'error'%>');
+<%end%>

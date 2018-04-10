@@ -1,0 +1,30 @@
+<%= form_for(person,remote: true) do |form| %>
+  <div class="field">
+    <%= form.label :state_id %>
+    <%= form.number_field :state_id, id: :person_state_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :city_id %>
+    <%= form.number_field :city_id, id: :person_city_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :person_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email, id: :person_email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mobile %>
+    <%= form.text_field :mobile, id: :person_mobile %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

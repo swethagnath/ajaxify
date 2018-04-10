@@ -1,0 +1,6 @@
+<%if @state.valid?%>
+    $('#new_state')[0].reset();
+	$('#body').append("<%= escape_javascript render 'state'%>");
+<%else%>
+	$('#error').html("<%=escape_javascript render 'error'%>");
+<%end%>

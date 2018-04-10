@@ -5,6 +5,7 @@ class StatesController < ApplicationController
   # GET /states.json
   def index
     @states = State.all
+    @state = State.new
   end
 
   # GET /states/1
@@ -28,9 +29,11 @@ class StatesController < ApplicationController
 
     respond_to do |format|
       if @state.save
+        format.js
         format.html { redirect_to @state, notice: 'State was successfully created.' }
         format.json { render :show, status: :created, location: @state }
       else
+        format.js
         format.html { render :new }
         format.json { render json: @state.errors, status: :unprocessable_entity }
       end
@@ -60,12 +63,14 @@ class StatesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
   def get_cities
     @state = State.find(params[:state_id])
     render json: @state.cities
   end
-
+ def check_name_present
+  @state = State.find_by(name: params[:name])
+  render json: @state.nil? ? {'msg':'can be used'} : {'msg':'already taken'}
+ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_state

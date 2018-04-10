@@ -1,10 +1,10 @@
 class CitiesController < ApplicationController
   before_action :set_city, only: [:show, :edit, :update, :destroy]
-
   # GET /cities
   # GET /cities.json
   def index
-    @cities = City.all
+    @cities = City.all.limit(80)
+    @city = City.new
   end
 
   # GET /cities/1
@@ -28,9 +28,11 @@ class CitiesController < ApplicationController
 
     respond_to do |format|
       if @city.save
+        format.js
         format.html { redirect_to @city, notice: 'City was successfully created.' }
         format.json { render :show, status: :created, location: @city }
       else
+        format.js
         format.html { render :new }
         format.json { render json: @city.errors, status: :unprocessable_entity }
       end
@@ -56,8 +58,8 @@ class CitiesController < ApplicationController
   def destroy
     @city.destroy
     respond_to do |format|
-      format.html { redirect_to cities_url, notice: 'City was successfully destroyed.' }
-      format.json { head :no_content }
+      # format.html { redirect_to cities_url, notice: 'City was successfully destroyed.' }
+      # format.json { head :no_content }
     end
   end
 
